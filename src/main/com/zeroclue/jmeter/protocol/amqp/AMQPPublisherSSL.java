@@ -230,16 +230,11 @@ public class AMQPPublisherSSL extends AMQPSamplerSSL implements Interruptible {
 
     @Override
     protected AMQP.BasicProperties getProperties() {
-        AMQP.BasicProperties parentProps = super.getProperties();
 
         int deliveryMode = getPersistent() ? 2 : 1;
 
-        AMQP.BasicProperties publishProperties =
-                new AMQP.BasicProperties(parentProps.getContentType(), parentProps.getContentEncoding(),
-                parentProps.getHeaders(), deliveryMode, parentProps.getPriority(),
-                getCorrelationId(), getReplyToQueue(), parentProps.getExpiration(),
-                parentProps.getMessageId(), parentProps.getTimestamp(), getMessageType(),
-                parentProps.getUserId(), parentProps.getAppId(), parentProps.getClusterId());
+        AMQP.BasicProperties publishProperties = new AMQP.BasicProperties.Builder().contentType("application/json").contentEncoding("UTF-8").build();
+        publishProperties.setDeliveryMode(deliveryMode);
 
         return publishProperties;
     }
